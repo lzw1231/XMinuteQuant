@@ -30,3 +30,9 @@ df_pos = (utils.next(df_signal) if f_cfg['trade_mode'] == 'NEXT' else utils.inst
 
 # 计算账户净值曲线
 df_equity = utils.equity_curve(df_pos, f_cfg)
+
+# 评价策略
+df_evaluate = utils.evaluate_strategy(df_equity)
+
+print(df_evaluate.T)
+# utils.myprint(df_evaluate.T)

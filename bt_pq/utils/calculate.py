@@ -162,3 +162,43 @@ def equity_curve(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
         pass
 
     return df
+
+
+# 评价策略
+def evaluate_strategy(df: pd.DataFrame) -> pd.DataFrame:
+    equity = df.copy()
+    equity['candle_end_time'] = equity['trade_time']
+    equity = equity[['candle_end_time', 'equity_curve']]
+    # print(equity)
+
+    # ===新建一个dataframe保存回测指标
+    results = pd.DataFrame()
+
+    # ===计算累积净值
+    results.loc[0, '累积净值'] = round(equity['equity_curve'].iloc[-1], 2)
+
+    # ===计算年化收益
+    annual_return = (equity['equity_curve'].iloc[-1]) ** ('1 days 00:00:00' / (equity['candle_end_time'].iloc[-1] - equity['candle_end_time'].iloc[0]) * 365) - 1
+    results.loc[0, '年化收益'] = str(round(annual_return * 100, 2)) + '%'
+
+    # 计算当日之前的资金曲线的最高点
+    equity['最高净值_至今'] = equity['equity_curve'].expanding().max()
+    # 计算到历史最高值到当日的跌幅
+    equity['当日净值/历史最高'] = equity['equity_curve'] / equity['最高净值_至今'] - 1
+    # 计算最大回撤，以及最大回撤结束时间
+    end_date, max_draw_down = tuple(equity.sort_values(by=['当日净值/历史最高']).iloc[0][['candle_end_time', '当日净值/历史最高']])
+    # 计算最大回撤开始时间
+    start_date = equity[equity['candle_end_time'] <= end_date].sort_values(by='equity_curve', ascending=False).iloc[0]['candle_end_time']
+    # 将无关的变量删除
+    # equity.drop(['最高净值_至今', '当日净值/历史最高'], axis=1, inplace=True)
+    # print(equity)
+    results.loc[0, '最大回撤'] = format(max_draw_down, '.2%')
+    results.loc[0, '最大回撤开始时间'] = str(start_date)
+    results.loc[0, '最大回撤结束时间'] = str(end_date)
+
+    # ===年化收益/回撤比：我个人比较关注的一个指标
+    results.loc[0, '年化收益/回撤比'] = round(annual_return / abs(max_draw_down), 2)
+    print('*' * 100)
+    print('回撤统计')
+    print(equity['当日净值/历史最高'].describe())
+    return results
