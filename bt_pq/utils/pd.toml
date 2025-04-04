@@ -1,0 +1,10 @@
+#pandas的显示配置文件
+[pandas.display]
+max_rows = 100      # 最大显示行数
+min_rows = 100       # 最小显示行数（滚动条出现阈值）
+max_columns = 1000   # 最大显示列数
+width = 1000         # 总显示宽度（字符数）
+max_colwidth = 1000  # 单列最大宽度
+ambiguous_as_wide = true  # 处理模糊宽度字符
+east_asian_width = true   # 正确对齐东亚字符
+expand_frame_repr = false # 禁止自动换行显示

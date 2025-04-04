@@ -1,0 +1,13 @@
+date_start = "2016-02-02"
+date_end = "2025-03-24"
+
+commodity = "螺纹钢主连"
+initial_cash = 1000000      # 初始投入资金
+invest_ratio = 0.1     # 每个品种的仓位
+slippage = 1                # 每跳价格
+c_rate = 0.0001027          # 手续费，例如 0.0001027 表示万分之1.027
+invest_margin_ratio = 0.15  # 保证金比率，主要是用于计算持仓合约，需要的保证金=合约价格*每跳价值*保证金比率 ******** 杠杆倍数 = 1/保证金比率  相当于你想加多大杠杆
+min_margin_ratio = 0.18     # 最小保证金比率，低于这个就会爆仓，目前在不满仓的情况下很难爆仓
+volume_per_lot = 10         # 每手交易量。例如：螺纹钢1手=10吨，黄金1手=1000克，玻璃1手=20吨
+trade_mode = "NEXT"         # 模式 next,下根K线执行
+#trade_mode = "INSTANTLY"   # 模式 instantly,立即执行

@@ -1,0 +1,11 @@
+[download]
+days = 20  # 需要更新的日K线数量
+
+[credentials]
+username = "luozhw"    # 用户名
+password = "bitCAN080"  # 密码
+
+[paths]
+path_temp = "./temp"        # 临时文件夹路径
+path_historical = "./historical"  # 历史文件夹路径
+path_latest = "./latest"     # 最新K线文件夹路径
